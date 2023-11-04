@@ -28,13 +28,11 @@ A cell that did not change at the last time step, and none of whose neighbours c
 To avoid decisions and branches in the counting loop, the rules can be rearranged from an egocentric approach of the inner field regarding its neighbours to a scientific observer's viewpoint: if the sum of all nine fields in a given neighbourhood is three, the inner field state for the next generation will be life; if the all-field sum is four, the inner field retains its current state; and every other sum sets the inner field to death.
 
 # Setup
-Kivy library for Python 3 is used for implementation. Basic install can be done as
+Flask framework used for implementation. Basic install can be done as
 
 ```
-    python -m pip install kivy
+    python -m pip install flask
 ```
-
-for more platform specific details see https://kivy.org/doc/stable/gettingstarted/installation.html
 
 # References
 See more at https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
