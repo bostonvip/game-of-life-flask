@@ -2,13 +2,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Flask App</title>
+    <title>Game of Life</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <button onclick="clickMe()">Click me</button>
+    <div id="grid-container">
+        {% for _ in range(num_of_rows) %}
+            <div class="grid-row">
+                {% for _ in range(num_of_cols) %}
+                    <div class="grid-cell"></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="button-container">
+        <button id="start-button">Start</button>
+        <button id="clear-button">Clear</button>
+    </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
+
