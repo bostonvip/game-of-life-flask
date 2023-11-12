@@ -5,13 +5,13 @@ window.onload = function() {
 
     startButton.addEventListener('click', function() {
         // Add your "Start" button functionality here
-        alert('Start button clicked');
+        // alert('Start button clicked');
     });
 
     clearButton.addEventListener('click', function() {
         // Add your "Clear" button functionality here
         // console.log('Clear button clicked');
-        alert('Clear Button clicked!');
+        // alert('Clear Button clicked!');
     });
 };
 
