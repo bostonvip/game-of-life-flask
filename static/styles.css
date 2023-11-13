@@ -16,11 +16,17 @@ body {
 }
 
 #grid-container {
-    display: flex;
+    display: flex; 
     flex-wrap: wrap;
     justify-content: center;
-    /* border: 1px solid black; */
 }
+
+/* #grid-container {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+} */
 
 #grid-border {
     display: flex;
@@ -44,6 +50,15 @@ body {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+}
+
+#button-container #generation-label {
+    /* align the label to the right */
+
+    position: relative; 
+    bottom: 0; 
+    right: 0; 
+    align-self: flex-end; 
 }
 
 #button-container button {
