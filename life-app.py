@@ -13,7 +13,7 @@ def home():
 #Start button clicked   
 @app.route('/start', methods=['POST'])
 def start_btn():
-    # Your "Start" button functionality here
+    # The "Start" button functionality here
     isRunning = request.get_json()['isRunning']
     #print(isRunning)
     #new_generation = 1  # Replace this with your actual new generation number
@@ -27,16 +27,16 @@ def increment_generation():
     generation = data['generation']
 
     if isRunning:
-        # generation += 1
         # Your code to update the game state here
-        pass
+        cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Replace this with your actual list of cell IDs
+        cell_states = [True, True, True]  # Replace this with your actual list of cell states
 
-    return jsonify({'result': 'Generation incremented'})
+    return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented'})
 
 #Clear button clicked
 @app.route('/clear', methods=['POST'])
 def clear_btn():
-    # Your "Clear" button functionality here
+    # Ther "Clear" button functionality here
     return jsonify({'result': 'Clear button clicked!!!'})
 
 #Cell clicked

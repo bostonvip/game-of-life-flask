@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    // Update the grid
+                    data.cell_ids.forEach((id, index0) => {
+                        let cell = document.getElementById(id);
+                        if (data.cell_states[index0]) {
+                            cell.classList.add('black');
+                        } else {
+                            cell.classList.remove('black');
+                        }
+                    });
                     console.log(data.result);
                 });
             }, generation_update_interval);
@@ -105,6 +114,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => response.json())
         .then(data => console.log(data.result));
-});
+    });
 });
 

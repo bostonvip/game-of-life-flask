@@ -94,63 +94,41 @@ class GameOfLife():
     
 
 # Define class Cell representing a single cell in the game board
-class Cell(Widget):
-    def __init__(self, color=DEAD_CELL_COLOR, **kwargs):        
-        super(Cell, self).__init__(**kwargs)
-        self.background_color = color 
+class Cell():
+    def __init__(self, cell_col, cell_row):        
+        self.col = cell_col
+        self.row = cell_row
+        self.cell_id = "cell-" + str(self.row) + "-" + str(self.col)
         self.alive = False
         self.alive_next = False
-        self.bind(pos=self.update_canvas, size=self.update_canvas)
-        #Draw the call square on the canvas
-        with self.canvas:
-            self.bg_color = Color(*self.background_color)
-            self.rect = Rectangle(pos=self.pos, size=self.size) #draw the cell square on the canvas
-            self.border_color = Color(*CELL_BORDER_COLOR)
-            self.points=[(self.x, self.y), (self.x+self.width, self.y), (self.x+self.width, self.y+self.height)]
-            self.border = Line(points=self.points, width=CELL_BORDER_WIDTH)
+        self.state_changed = False
     
-    def update_canvas(self, *args):
-        self.bg_color.rgba = self.background_color
-        self.rect.pos = self.pos
-        self.rect.size = self.size
-        self.border.points = self.points = [(self.x, self.y), (self.x+self.width, self.y), (self.x+self.width, self.y+self.height)]
-      
-    # Define a callback function that changes the color of the cell when it is clicked
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-                self.alive = not self.alive
-                self.background_color = ALIVE_CELL_COLOR if self.alive else DEAD_CELL_COLOR
-                self.update_canvas()
-
+    # Define a function that changes the state of the cell when it is clicked
+    def on_touch_down(self):
+        self.alive = not self.alive
 
 # Define class Colony representing the entire game board    
-class Colony(GridLayout):
-    def __init__(self, **kwargs):
-        super(Colony, self).__init__(**kwargs)
+class Colony():
+    def __init__(self):
         # Set the number of columns and rows for the GridLayout
         self.cols = COLONY_NUMBER_OF_COLS
         self.rows = COLONY_NUMBER_OF_ROWS
-        self.orientation = "tb-lr"
         self.generation_number = 0
         self.cells = [] #create an empty list to hold the cells
         for i in range(self.cols):
             cells_row = [] #create an empty list to temporarily hold a row the cells
             for j in range(self.rows):
-                cell = Cell()
-                self.add_widget(cell)
+                cell = Cell(i,j)
                 cells_row.append(cell)
             self.cells.append(cells_row)
-
-    def update_canvas(self, *args):
-        self.border.rectangle = (self.x, self.y, self.width, self.height) 
 
     # Clear the board
     def clear_board(self):
         for cell_row in self.cells:
             for cell in cell_row:
                 cell.alive = False
-                cell.background_color = DEAD_CELL_COLOR
-                cell.update_canvas()
+                cell.alive_next = False
+                cell.state_changed = False
 
     # For the provided cell position return the number of live neighbors within the 3x3 grid centered on the cell and including the cell
     def get_live_neighbors(self, cell_col, cell_row):
@@ -183,26 +161,27 @@ class Colony(GridLayout):
                     self.cells[i][j].alive_next = alive
                 else: #live_neighbors < 3 or live_neighbors > 4
                     self.cells[i][j].alive_next = False
+                # mark the cell for the grid update if the cell state changed
+                self.cells[i][j].state_changed = self.cells[i][j].alive_next != self.cells[i][j].alive
 
     # Update the cells to the next generation
     def update_cells_to_next_generation(self):
+        cell_ids = []  # list of cell IDs for the cell grid update
+        cell_states = []  # list of cell states for the cell grid update       
         for i in range(self.cols):
             for j in range(self.rows):
                 self.cells[i][j].alive = self.cells[i][j].alive_next
-                self.cells[i][j].background_color = ALIVE_CELL_COLOR if self.cells[i][j].alive else DEAD_CELL_COLOR
-                self.cells[i][j].update_canvas()
+                sell_ids.append(self.cells[i][j].cell_id)
+                cell_states.append(self.cells[i][j].alive)
+        return cell_ids, cell_states
 
     # Go through one generation of cells
     def go_through_one_generation(self):
         self.calculate_next_cell_generation()
-        self.update_cells_to_next_generation()
-        self.generation_number += 1
+        cell_ids, cell_states = self.update_cells_to_next_generation()
+        return cell_ids, cell_states
 
     # Reset generation number to 0
     def reset_generation_number(self):
         self.generation_number = 0
     
-
-# Run the app
-if __name__ == "__main__":
-    GameOfLife().run()
