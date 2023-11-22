@@ -80,9 +80,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Add Clear button event listener
     document.getElementById('clear-button').addEventListener('click', () => {
-        fetch('/clear', {method: 'POST'})
-            .then(response => response.json())
-            .then(data => console.log(data.result));
-    });
+        // Stop the timer
+        clearInterval(timer);
+        // Clear the running state
+        isRunning = false;
+        // Reset the Start/Pause button
+        document.getElementById('start-button').textContent = 'Start';
+        // Reset the generation counter
+        generation = 0;
+        document.getElementById('generation-label').textContent = 'Generation: ' + generation;
+        // Clear the grid
+        // add code here to clear the grid
+
+        fetch('/clear', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ isRunning: isRunning, generation: generation }),
+        })
+        .then(response => response.json())
+        .then(data => console.log(data.result));
+});
 });
 
