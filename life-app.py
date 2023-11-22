@@ -24,8 +24,12 @@ def clear_btn():
 
 @app.route('/cell_click', methods=['POST'])
 def cell_click():
+    data = request.get_json()
+    cell_id = data['cell_id']
+    row = data['row']
+    col = data['col']
     # Your "cell_click" functionality here
-    return jsonify({'result': 'Cell clicked'})
+    return jsonify({'result': f'Cell at row {row}, column {col} clicked'})
 
 if __name__ == '__main__':
     app.run(debug=True)

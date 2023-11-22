@@ -21,10 +21,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const cells = document.querySelectorAll('.grid-cell');
 
     // Add click event listener to each cell
-    cells.forEach(cell => {
+    cells.forEach((cell, index) => {
         cell.addEventListener('click', () => {
             // Toggle cell color
             cell.classList.toggle('black');
+
+            // Calculate row and column
+            const row = Math.floor(index / COLONY_NUMBER_OF_COLS);
+            const col = index % COLONY_NUMBER_OF_COLS;
 
             // Send POST request to '/cell_click' route
             fetch('/cell_click', {
@@ -34,6 +38,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 },
                 body: JSON.stringify({
                     'cell_id': cell.id,  // Assuming each cell has a unique id
+                    'row': row,
+                    'col': col,
                 }),
             })
             .then(response => response.json())
