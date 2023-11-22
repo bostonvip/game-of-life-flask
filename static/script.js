@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Definitions
     let isRunning = false;
     let generation = 0;
-    const generation_update_interval = 500;    
+    const generation_update_interval = 500;  
+    let timer = null;  
 
     // Get all grid cells
     const cells = document.querySelectorAll('.grid-cell');
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Add Clear button event listener
     document.getElementById('clear-button').addEventListener('click', () => {
         // Stop the timer
-        clearInterval(timer);
+        if (timer) { clearInterval(timer); }
         // Clear the running state
         isRunning = false;
         // Reset the Start/Pause button
@@ -90,7 +91,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         generation = 0;
         document.getElementById('generation-label').textContent = 'Generation: ' + generation;
         // Clear the grid
-        // add code here to clear the grid
+        cells.forEach((cell, index) => {
+            cell.classList.remove('black');
+        });
+        console.log("The grid has been cleared!!!");
 
         fetch('/clear', {
             method: 'POST',
