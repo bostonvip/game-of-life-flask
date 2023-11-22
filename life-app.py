@@ -15,7 +15,7 @@ def start_btn():
     # Your "Start" button functionality here
     # return jsonify({'result': 'Start button clicked!!!'})
     new_generation = 1  # Replace this with your actual new generation number
-    return jsonify({'generation': new_generation})
+    return jsonify({'generation': new_generation, 'result': 'Start button clicked!!!'})
 
 @app.route('/clear', methods=['POST'])
 def clear_btn():

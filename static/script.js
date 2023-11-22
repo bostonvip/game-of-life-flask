@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('start-button').addEventListener('click', () => {
         fetch('/start', {method: 'POST'})
             .then(response => response.json())
-            // .then(data => console.log(data.result))
             .then(data => {
                 // console.log('New generation:', data.generation);
                 document.getElementById('generation-label').textContent = 'Generation: ' + data.generation;
+                console.log(data.result);
             });
     });
 
@@ -66,8 +66,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-// window.onload = function() {
-//     var grid = document.getElementById('grid-border');
-//     var bottomContainer = document.getElementById('bottom-container');
-//     bottomContainer.style.width = getComputedStyle(grid).width;
-// }
