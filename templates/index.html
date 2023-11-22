@@ -19,11 +19,16 @@
             </div>
         </div>
 
-        <div id="button-container">
-            <button id="start-button">Start</button>
-            <button id="clear-button">Clear</button>
-            <p id="generation-label">Generation: 0</p>
+        <div id="bottom-container">
+            <div id="button-container">
+                <button id="start-button">Start</button>
+                <button id="clear-button">Clear</button>
             </div>
+
+            <div id="generation-label-container">
+                <p id="generation-label">Generation: 0</p>
+            </div>
+        </div>
     </div>    
         
     <script src="{{ url_for('static', filename='script.js') }}"></script>

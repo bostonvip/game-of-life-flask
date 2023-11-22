@@ -34,3 +34,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
+// window.onload = function() {
+//     var grid = document.getElementById('grid-border');
+//     var bottomContainer = document.getElementById('bottom-container');
+//     bottomContainer.style.width = getComputedStyle(grid).width;
+// }

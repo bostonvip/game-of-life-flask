@@ -21,13 +21,6 @@ body {
     justify-content: center;
 }
 
-/* #grid-container {
-    position: relative; 
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-} */
-
 #grid-border {
     display: flex;
     flex-direction: column; 
@@ -36,7 +29,7 @@ body {
 
 .grid-row {
     display: flex;
-    flex-wrap: wrap; /* Add this line */
+    flex-wrap: wrap; 
 }
 
 .grid-cell {
@@ -46,19 +39,18 @@ body {
     background-color: white;
 }
 
-#button-container {
+#bottom-container {
     display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 5px auto;
 }
 
-#button-container #generation-label {
-    /* align the label to the right */
-
-    position: relative; 
-    bottom: 0; 
-    right: 0; 
-    align-self: flex-end; 
+#button-container {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
 }
 
 #button-container button {
@@ -73,6 +65,20 @@ body {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+#generation-label-container {
+    display: flex;
+    justify-content: center;
+}
+
+#generation-label {
+    position: relative; 
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto;
 }
 
 #button-container button:hover {background-color: #979797 /*#007BFF*/} /* Lighter blue */
