@@ -39,6 +39,10 @@ body {
     background-color: white;
 }
 
+.grid-cell.black {
+    background-color: black;
+}
+
 #bottom-container {
     display: flex;
     justify-content: space-between;

@@ -17,12 +17,36 @@
 // };
 
 document.addEventListener('DOMContentLoaded', (event) => {
+    // Get all grid cells
+    const cells = document.querySelectorAll('.grid-cell');
+
+    // Add click event listener to each cell
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            // Toggle cell color
+            cell.classList.toggle('black');
+
+            // Send POST request to '/cell_click' route
+            fetch('/cell_click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'cell_id': cell.id,  // Assuming each cell has a unique id
+                }),
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.result));
+        });
+    });
+    
     document.getElementById('start-button').addEventListener('click', () => {
         fetch('/start', {method: 'POST'})
             .then(response => response.json())
             // .then(data => console.log(data.result))
             .then(data => {
-                console.log('New generation:', data.generation);
+                // console.log('New generation:', data.generation);
                 document.getElementById('generation-label').textContent = 'Generation: ' + data.generation;
             });
     });
