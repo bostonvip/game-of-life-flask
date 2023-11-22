@@ -13,7 +13,8 @@ def home():
 @app.route('/start', methods=['POST'])
 def start_btn():
     # Your "Start" button functionality here
-    # return jsonify({'result': 'Start button clicked!!!'})
+    isRunning = request.get_json()['isRunning']
+    # print(isRunning)
     new_generation = 1  # Replace this with your actual new generation number
     return jsonify({'generation': new_generation, 'result': 'Start button clicked!!!'})
 

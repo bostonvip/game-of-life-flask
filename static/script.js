@@ -49,14 +49,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
     
+    let isRunning = false;
+
     document.getElementById('start-button').addEventListener('click', () => {
-        fetch('/start', {method: 'POST'})
-            .then(response => response.json())
-            .then(data => {
-                // console.log('New generation:', data.generation);
-                document.getElementById('generation-label').textContent = 'Generation: ' + data.generation;
-                console.log(data.result);
-            });
+        isRunning = !isRunning;
+        document.getElementById('start-button').textContent = isRunning ? 'Pause' : 'Start';
+    
+        fetch('/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ isRunning: isRunning }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('generation-label').textContent = 'Generation: ' + data.generation;
+            console.log(data.result);
+        });
     });
 
     document.getElementById('clear-button').addEventListener('click', () => {
