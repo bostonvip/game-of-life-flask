@@ -9,10 +9,10 @@
     <div id="main-container">
         <div id="grid-container">
             <div id="grid-border">
-                {% for _ in range(num_of_rows) %}
+                {% for row in range(num_of_rows) %}
                     <div class="grid-row">
-                        {% for _ in range(num_of_cols) %}
-                            <div class="grid-cell"></div>
+                        {% for col in range(num_of_cols) %}
+                            <div class="grid-cell" id="cell-{{ row }}-{{ col }}"></div>
                         {% endfor %}
                     </div>
                 {% endfor %}
@@ -33,6 +33,7 @@
         
     <script>
         const COLONY_NUMBER_OF_COLS = {{ num_of_cols }};
+        console.log("The value of num_of_cols is {{ num_of_cols }}");
     </script>
     
     <script src="{{ url_for('static', filename='script.js') }}"></script>

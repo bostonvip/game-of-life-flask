@@ -17,6 +17,8 @@
 // };
 
 document.addEventListener('DOMContentLoaded', (event) => {
+    // const COLONY_NUMBER_OF_COLS = {{ num_of_cols | tojson }};
+
     // Get all grid cells
     const cells = document.querySelectorAll('.grid-cell');
 

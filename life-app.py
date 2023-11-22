@@ -29,7 +29,7 @@ def cell_click():
     row = data['row']
     col = data['col']
     # Your "cell_click" functionality here
-    return jsonify({'result': f'Cell at row {row}, column {col} clicked'})
+    return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked'})
 
 if __name__ == '__main__':
     app.run(debug=True)
