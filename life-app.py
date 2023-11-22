@@ -10,19 +10,36 @@ app = Flask(__name__)
 def home():
     return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS)
 
+#Start button clicked   
 @app.route('/start', methods=['POST'])
 def start_btn():
     # Your "Start" button functionality here
     isRunning = request.get_json()['isRunning']
-    # print(isRunning)
-    new_generation = 1  # Replace this with your actual new generation number
-    return jsonify({'generation': new_generation, 'result': 'Start button clicked!!!'})
+    #print(isRunning)
+    #new_generation = 1  # Replace this with your actual new generation number
+    return jsonify({'result': 'Start button clicked!!!'})
 
+#Generation increment timer event
+@app.route('/increment', methods=['POST'])
+def increment_generation():
+    data = request.get_json()
+    isRunning = data['isRunning']
+    generation = data['generation']
+
+    if isRunning:
+        # generation += 1
+        # Your code to update the game state here
+        pass
+
+    return jsonify({'result': 'Generation incremented'})
+
+#Clear button clicked
 @app.route('/clear', methods=['POST'])
 def clear_btn():
     # Your "Clear" button functionality here
     return jsonify({'result': 'Clear button clicked!!!'})
 
+#Cell clicked
 @app.route('/cell_click', methods=['POST'])
 def cell_click():
     data = request.get_json()

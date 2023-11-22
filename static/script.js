@@ -1,23 +1,10 @@
 // static/script.js
 
-// window.onload = function() {
-//     var startButton = document.getElementById('start-button');
-//     var clearButton = document.getElementById('clear-button');
-
-//     startButton.addEventListener('click', function() {
-//         // Add your "Start" button functionality here
-//         // alert('Start button clicked');
-//     });
-
-//     clearButton.addEventListener('click', function() {
-//         // Add your "Clear" button functionality here
-//         // console.log('Clear button clicked');
-//         // alert('Clear Button clicked!');
-//     });
-// };
-
 document.addEventListener('DOMContentLoaded', (event) => {
-    // const COLONY_NUMBER_OF_COLS = {{ num_of_cols | tojson }};
+    // Definitions
+    let isRunning = false;
+    let generation = 0;
+    const generation_update_interval = 500;    
 
     // Get all grid cells
     const cells = document.querySelectorAll('.grid-cell');
@@ -49,26 +36,49 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
     
-    let isRunning = false;
-
+    // Add Start/Pause button and Generation Timer event listeners
     document.getElementById('start-button').addEventListener('click', () => {
         isRunning = !isRunning;
         document.getElementById('start-button').textContent = isRunning ? 'Pause' : 'Start';
     
+        if (isRunning) {
+            // Start the timer
+            timer = setInterval(() => {
+                generation++;
+                document.getElementById('generation-label').textContent = 'Generation: ' + generation;
+    
+                fetch('/increment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ isRunning: isRunning, generation: generation }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.result);
+                });
+            }, generation_update_interval);
+        } else {
+            // Stop the timer
+            clearInterval(timer);
+        }
+
         fetch('/start', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ isRunning: isRunning }),
+            body: JSON.stringify({ isRunning: isRunning, generation: generation }),
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('generation-label').textContent = 'Generation: ' + data.generation;
             console.log(data.result);
         });
+        
     });
 
+    // Add Clear button event listener
     document.getElementById('clear-button').addEventListener('click', () => {
         fetch('/clear', {method: 'POST'})
             .then(response => response.json())
