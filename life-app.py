@@ -1,5 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, jsonify
+from game_of_life import Colony
 
 COLONY_NUMBER_OF_ROWS = 30
 COLONY_NUMBER_OF_COLS = 50
