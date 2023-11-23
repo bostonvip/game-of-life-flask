@@ -96,7 +96,7 @@ class Colony():
         for i in range(self.cols):
             for j in range(self.rows):
                 self.cells[i][j].alive = self.cells[i][j].alive_next
-                sell_ids.append(self.cells[i][j].cell_id)
+                cell_ids.append(self.cells[i][j].cell_id)
                 cell_states.append(self.cells[i][j].alive)
         return cell_ids, cell_states
 

@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     'cell_id': cell.id,  // Assuming each cell has a unique id
                     'row': row,
                     'col': col,
+                    'alive': cell.classList.contains('black') ? 1 : 0,
                 }),
             })
             .then(response => response.json())

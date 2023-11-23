@@ -10,6 +10,10 @@ app = Flask(__name__)
 # Create the cell colony grid and add it to the layout
 colony = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
 
+# Define variables
+isRunning = False
+generation = 0
+
 @app.route('/')
 def home():
     return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS)
@@ -29,29 +33,34 @@ def increment_generation():
     data = request.get_json()
     isRunning = data['isRunning']
     generation = data['generation']
-
+    # if the game is running, increment the generation number and update the game state
+    cell_ids = cell_states = []
     if isRunning:
-        # Your code to update the game state here
-        cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Replace this with your actual list of cell IDs
-        cell_states = [True, True, True]  # Replace this with your actual list of cell states
-
-    return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented'})
+        # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Replace this with your actual list of cell IDs
+        # cell_states = [True, True, True]  # Replace this with your actual list of cell states
+        cell_ids, cell_states = colony.go_through_one_generation()
+    #return the list of cell IDs and states to update the game board
+    return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented to ' + str(generation)})
 
 #Clear button clicked
 @app.route('/clear', methods=['POST'])
 def clear_btn():
-    # Ther "Clear" button functionality here
+    # "Clear" button functionality here
+    colony.clear_board()
     return jsonify({'result': 'Clear button clicked!!!'})
 
 #Cell clicked
 @app.route('/cell_click', methods=['POST'])
 def cell_click():
+    # "Cell" clicked functionality here
     data = request.get_json()
     cell_id = data['cell_id']
     row = data['row']
     col = data['col']
-    # Your "cell_click" functionality here
-    return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked'})
+    alive = data['alive']
+    s_alive = 'alive' if alive else 'dead'
+    colony.set_cell_state(col, row, alive)
+    return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked {s_alive}'})
 
 if __name__ == '__main__':
     app.run(debug=True)
