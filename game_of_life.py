@@ -1,11 +1,4 @@
 #Definitions
-DEAD_CELL_COLOR = (1, 1, 1, 1) #white
-ALIVE_CELL_COLOR = (0, 0, 0, 1) #black 
-CELL_BORDER_COLOR = (0, 0, 0, 1) #black
-CELL_BORDER_WIDTH = 1 
-COLONY_NUMBER_OF_ROWS = 30
-COLONY_NUMBER_OF_COLS = 50
-
 GENERATION_UPDATE_INTERVAL = 0.5 # in seconds
 
 # Classic Game of Life
@@ -14,84 +7,12 @@ GENERATION_UPDATE_INTERVAL = 0.5 # in seconds
 #     2) Any dead cell with three live neighbours becomes a live cell.
 #     3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-# Define a custom widget class that inherits from BoxLayout
-class GameOfLife():
-    # Build and return the root widget of the app
-    def build(self):
-        Window.size = (APP_SCREEN_WIDTH, APP_SCREEN_HEIGHT)
-    
-        # create a box layout with vertical orientation for the app window
-        self.box_layout = BoxLayout(orientation='vertical', padding=WIDGET_PADDING_DEFAULT)#, spacing=WIDGET_SPACING_DEFAULT)
-        self.box_layout.background_color = WIDGET_BACKGROUND_COLOR
 
-        # Create the Colony widget and add it to the layout
-        self.colony = Colony()
-        self.box_layout.add_widget(self.colony)
-
-        # Create a horizontal box layout for the buttons
-        self.button_layout = BoxLayout(orientation="horizontal", size_hint=(1, None), height=50, pos_hint={"center_x": 0.75}) #, spacing=0, padding=(10,10,10,10)) 
-        self.button_layout.background_color = WIDGET_BACKGROUND_COLOR
-
-        # Create a Start button widget and add it to the button_layout; limit the size of the button to 100px by 50px
-        self.button1 = Button(text="Start", size_hint=(None, None), size=(100, 50)) #, pos_hint={"center_x":  0.2})
-        self.button_layout.add_widget(self.button1) 
-
-        # create a Clear button widget size 100px by 50px and add it to the layout to the right of the Reverse Text button
-        self.button2 = Button(text="Clear", size_hint=(None, None), size=(100, 50)) #, pos_hint={"center_x": 0.8})
-        self.button_layout.add_widget(self.button2)
-
-        # create a text string widget and add it to the button layout at the very right of the layout 
-        self.label = Label(text="Generation: 0", pos_hint={"center_x": 0.8})
-
-        self.button_layout.add_widget(self.label)
-
-        # add the button layout to the box layout
-        self.box_layout.add_widget(self.button_layout)
-
-        # Bind the button1's on_press event to a callback function
-        self.button1.bind(on_press=self.start_btn)
-
-        # Bind the button2's on_press event to a callback function named reset_btn
-        self.button2.bind(on_press=self.clear_btn)
-
-        # Create a Clock event to update the game board to the next generation on a timer
-        Clock.schedule_interval(self.next_generation_update, GENERATION_UPDATE_INTERVAL)
-
-        #Prepare the game to start
-        self.running = False #flag to indicate if the game is running through colony cell generations
-        self.update_generation_label(self.colony.generation_number)
-
-        return self.box_layout
-
-    # Define a callback function that reverses the text in the text input widget
-    def start_btn(self, instance):
-        # Get the current text from the text input widget
-        if self.button1.text == "Start" or self.button1.text == "Continue":
-            self.button1.text = "Pause"
-            self.running = True #start the game
-        else:
-            self.button1.text = "Continue"
-            self.running = False #pause the game
-
-    # Define a callback function that changes the color of the text in the text input widget
-    def clear_btn(self, instance):
-        self.running = False #stop the game
-        self.button1.text = "Start"
-        self.colony.clear_board() #Clear the board
-        self.colony.reset_generation_number()
-        self.update_generation_label(self.colony.generation_number)
-
-    # Update the generation label   
-    def update_generation_label(self, generation):
-        self.label.text = "Generation: " + str(generation)
-
-    # Define a callback function that updates the game board to the next generation on a timer
-    def next_generation_update(self, dt):
-        if self.running:
-            self.colony.go_through_one_generation()
-            self.update_generation_label(self.colony.generation_number)
-
-    
+# # Define a callback function that updates the game board to the next generation on a timer
+# def next_generation_update(self, dt):
+#     if self.running:
+#         self.colony.go_through_one_generation()
+#         self.update_generation_label(self.colony.generation_number)
 
 # Define class Cell representing a single cell in the game board
 class Cell():
@@ -109,10 +30,10 @@ class Cell():
 
 # Define class Colony representing the entire game board    
 class Colony():
-    def __init__(self):
+    def __init__(self, cols, rows):
         # Set the number of columns and rows for the GridLayout
-        self.cols = COLONY_NUMBER_OF_COLS
-        self.rows = COLONY_NUMBER_OF_ROWS
+        self.cols = cols
+        self.rows = rows
         self.generation_number = 0
         self.cells = [] #create an empty list to hold the cells
         for i in range(self.cols):
@@ -121,6 +42,10 @@ class Colony():
                 cell = Cell(i,j)
                 cells_row.append(cell)
             self.cells.append(cells_row)
+
+    # Set the state of the cell at the provided row and column
+    def set_cell_state(self, cell_col, cell_row, alive):
+        self.cells[cell_col][cell_row].alive = alive
 
     # Clear the board
     def clear_board(self):

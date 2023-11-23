@@ -6,6 +6,9 @@ COLONY_NUMBER_OF_COLS = 50
 
 app = Flask(__name__)
 
+# Create the cell colony grid and add it to the layout
+colony = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+
 @app.route('/')
 def home():
     return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS)
