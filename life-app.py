@@ -18,7 +18,7 @@ generation = 0
 def home():
     return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS)
 
-#Start button clicked   
+#Start/Pause button clicked   
 @app.route('/start', methods=['POST'])
 def start_btn():
     # The "Start" button functionality here
