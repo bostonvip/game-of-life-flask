@@ -23,8 +23,6 @@ def home():
 def start_btn():
     # The "Start" button functionality here
     isRunning = request.get_json()['isRunning']
-    #print(isRunning)
-    #new_generation = 1  # Replace this with your actual new generation number
     return jsonify({'result': 'Start button clicked!!!'})
 
 #Generation increment timer event
@@ -36,8 +34,8 @@ def increment_generation():
     # if the game is running, increment the generation number and update the game state
     cell_ids = cell_states = []
     if isRunning:
-        # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Replace this with your actual list of cell IDs
-        # cell_states = [True, True, True]  # Replace this with your actual list of cell states
+        # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Example of an actual list of cell IDs
+        # cell_states = [True, True, True]  # Example of an actual list of cell states
         cell_ids, cell_states = colony.go_through_one_generation()
     #return the list of cell IDs and states to update the game board
     return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented to ' + str(generation)})

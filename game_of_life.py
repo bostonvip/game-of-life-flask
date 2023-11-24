@@ -7,13 +7,6 @@ GENERATION_UPDATE_INTERVAL = 0.5 # in seconds
 #     2) Any dead cell with three live neighbours becomes a live cell.
 #     3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-
-# # Define a callback function that updates the game board to the next generation on a timer
-# def next_generation_update(self, dt):
-#     if self.running:
-#         self.colony.go_through_one_generation()
-#         self.update_generation_label(self.colony.generation_number)
-
 # Define class Cell representing a single cell in the game board
 class Cell():
     def __init__(self, cell_col, cell_row):        
