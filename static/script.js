@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     // Definitions
     let isRunning = false;
+    let isBoardCleared = false;
     let generation = 0;
     const generation_update_interval = 500;  
     let timer = null;  
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     // Update the grid
                     data.cell_ids.forEach((id, index0) => {
                         let cell = document.getElementById(id);
-                        if (data.cell_states[index0]) {
+                        if (data.cell_states[index0] && isBoardCleared == false) {
                             cell.classList.add('black');
                         } else {
                             cell.classList.remove('black');
@@ -84,6 +85,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => response.json())
         .then(data => {
+            isBoardCleared = false;
+            console.log('The board is updating now!!!');
             console.log(data.result);
         });
         
@@ -105,7 +108,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             cell.classList.remove('black');
         });
         console.log("The grid has been cleared!!!");
-
+        isBoardCleared = true;
+        console.log('The board is cleared now!!!');
+        // Send POST request to '/clear' route
         fetch('/clear', {
             method: 'POST',
             headers: {
