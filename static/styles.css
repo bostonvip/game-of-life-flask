@@ -42,33 +42,6 @@ body {
     background-color: white;
 }
 
-@media (max-width: 1400px) {
-    .grid-cell {
-        /* width: calc(100% / 50);
-        height: calc(100% / 50); */
-        width: 20px;
-        height: 20px;           
-    }
-}
-
-@media (max-width: 1100px) {
-    .grid-cell {
-        /* width: calc(100% / 50);
-        height: calc(100% / 50); */
-        width: 15px;
-        height: 15px;           
-    }
-}
-
-@media (max-height: 840px) {
-    .grid-cell {
-        /* width: calc(100% / 3);
-        height: calc(100% / 3); */
-        width: 20px;
-        height: 20px;     
-    }
-}
-
 .grid-cell.black {
     background-color: black;
 }
@@ -119,4 +92,45 @@ body {
 
 #button-container button:active {
   background-color: #424141; /* #0056b3;*/
+}
+
+@media (max-width: 1400px) {
+    .grid-cell {
+        /* width: calc(100% / 50);
+        height: calc(100% / 50); */
+        width: 20px;
+        height: 20px;           
+    }
+}
+
+@media (max-width: 1100px) {
+    .grid-cell {
+        /* width: calc(100% / 50);
+        height: calc(100% / 50); */
+        width: 15px;
+        height: 15px;           
+    }
+}
+
+@media (max-height: 840px) {
+    .grid-cell {
+        /* width: calc(100% / 3);
+        height: calc(100% / 3); */
+        width: 20px;
+        height: 20px;     
+    }
+}
+
+@media only screen 
+    and (min-device-width: 1536px) 
+    and (max-device-width: 2048px) 
+    and (orientation: landscape) 
+    and (-webkit-min-device-pixel-ratio: 2) {
+
+        .grid-cell {
+                width: 15px;
+                height: 15px;
+        }
+
+        /* Add any other styles you want to adjust for an iPad screen */
 }
