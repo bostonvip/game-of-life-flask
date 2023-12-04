@@ -62,7 +62,7 @@ body {
 
 #button-container button {
     width: 100px;
-    height: 50px;
+    height: 40px;
     background-color: #5c5a5a; /*#0056b3;*/ /* Blue */
     border: none;
     color: white;
@@ -83,7 +83,7 @@ body {
     position: relative; 
     display: block;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     margin: 0 auto;
 }
@@ -126,6 +126,14 @@ body {
         width: 15px;
         height: 15px;           
     }
+    #button-container button {
+        width: 75px;
+        height: 30px;     
+        font-size: 16px;       
+    }     
+    #generation-label {
+        font-size: 16px;
+    }     
 }
 
 @media (max-width: 900px) 
@@ -143,21 +151,73 @@ body {
   and (orientation: landscape) 
   and (-webkit-min-device-pixel-ratio: 2) {
     .grid-cell {
-        width: 20px;
-        height: 20px;           
-    }
+        width: 15px;
+        height: 15px;       
+    }   
+    #button-container button {
+        width: 75px;
+        height: 30px;
+        font-size: 16px;            
+    }    
+    #generation-label {
+        font-size: 16px;
+    }    
 }
 
+/* DEVICE SCREEN SIZE EXPERIMENTATION BELOW */
 
-/* @media only screen 
-    and (min-device-width: 1024px) 
-    and (max-device-width: 1366px) 
-    and (orientation: landscape) 
-    and (-webkit-min-device-pixel-ratio: 2) 
-    {
-        .grid-cell {
-                width: 1.8vw;
-                height: 1.8vw;
-        }
+/* @media only screen and (max-width: 575.98px) {
+    // CSS rules for extra small devices like small phones 
+}
+*/
 
+/* CSS rules for small devices like phones  */
+/* @media only screen and (min-width: 576px) and (max-width: 767.98px) {
+    .grid-cell {
+        width: 15px;
+        height: 15px;       
+    }   
+    #button-container button {
+        width: 75px;
+        height: 30px;            
+    }    
+    #generation-label {
+        font-size: 15px;
+    }       
+}     */
+
+/* CSS rules for medium devices like tablets  */
+/* @media only screen and (min-width: 768px) and (max-width: 991.98px) {
+    .grid-cell {
+        width: 15px;
+        height: 15px;       
+    }   
+    #button-container button {
+        width: 75px;
+        height: 30px;            
+    }    
+    #generation-label {
+        font-size: 15px;
+    }       
 } */
+/*
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+    // CSS rules for large devices like large tablets and small desktops 
+    .grid-cell {
+        width: 15px;
+        height: 15px;       
+    }   
+    #button-container button {
+        width: 75px;
+        height: 30px;            
+    }    
+    #generation-label {
+        font-size: 15px;
+    }       
+}
+@media only screen and (min-width: 1200px) {
+    // CSS rules for extra large devices like large desktops 
+} */
+
+
+
