@@ -136,15 +136,28 @@ body {
     }
 }
 
+/* add media query for landscape mode on 10" iPad Pro landscape */
 @media only screen 
+  and (min-device-width: 834px) 
+  and (max-device-width: 1112px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .grid-cell {
+        width: 20px;
+        height: 20px;           
+    }
+}
+
+
+/* @media only screen 
     and (min-device-width: 1024px) 
     and (max-device-width: 1366px) 
     and (orientation: landscape) 
-    /* and (-webkit-min-device-pixel-ratio: 2)  */
+    and (-webkit-min-device-pixel-ratio: 2) 
     {
         .grid-cell {
                 width: 1.8vw;
                 height: 1.8vw;
         }
 
-}
+} */
