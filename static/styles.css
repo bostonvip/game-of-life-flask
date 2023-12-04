@@ -136,15 +136,15 @@ body {
     }
 }
 
-/* @media only screen 
-    and (min-device-width: 1536px) 
-    and (max-device-width: 2048px) 
+@media only screen 
+    and (min-device-width: 1024px) 
+    and (max-device-width: 1366px) 
     and (orientation: landscape) 
-    and (-webkit-min-device-pixel-ratio: 2) {
-
+    /* and (-webkit-min-device-pixel-ratio: 2)  */
+    {
         .grid-cell {
-                width: 2vw;
-                height: 2vw;
+                width: 1.8vw;
+                height: 1.8vw;
         }
 
-} */
+}
