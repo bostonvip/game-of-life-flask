@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = b'My.Very@Secret.Key'
 
 # Create the cell colony grid and add it to the layout
-colony = None #Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+colony = {} # Dictionary of cell colony grids, one for each user's session
 
 # Define variables
 isRunning = False
@@ -25,10 +25,11 @@ def home():
     if 'user_id' not in session:
         # If 'user_id' is not in the session, generate a new user ID
         session['user_id'] = generate_user_id()
-        colony = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+        colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
     user_id = session['user_id']
-    # if colony == None:
-    #     colony = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+    #check if the user id is in the colony dictionary
+    if user_id not in colony:
+        colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
     return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id)
 
 @app.route('/clear_session')
@@ -73,7 +74,7 @@ def increment_generation():
     if isRunning:
         # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Example of an actual list of cell IDs
         # cell_states = [True, True, True]  # Example of an actual list of cell states
-        cell_ids, cell_states = colony.go_through_one_generation()
+        cell_ids, cell_states = colony[session['user_id']].go_through_one_generation()
     #return the list of cell IDs and states to update the game board
     return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented to ' + str(generation)})
 
@@ -81,7 +82,7 @@ def increment_generation():
 @app.route('/clear', methods=['POST'])
 def clear_btn():
     # "Clear" button functionality here
-    colony.clear_board()
+    colony[session['user_id']].clear_board()
     return jsonify({'result': 'Clear button clicked!!!'})
 
 # Cell clicked
@@ -94,7 +95,7 @@ def cell_click():
     col = data['col']
     alive = data['alive']
     s_alive = 'alive' if alive else 'dead'
-    colony.set_cell_state(col, row, alive)
+    colony[session['user_id']].set_cell_state(col, row, alive)
     return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked {s_alive}'})
 
 if __name__ == '__main__':
