@@ -19,28 +19,28 @@ colony = {} # Dictionary of cell colony grids, one for each user's session
 # isRunning = False
 # generation = 0
 user_id = '298c5cba8e95ff110b1afcc307b712f83e8d245a46decc8c9a560bab8ef5c7fb' # Unique user session ID
-tabId = '0' # Unique browser tab ID
+tab_id = '0' # Unique browser tab ID
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    global colony, user_id, tabId
+    global colony, user_id, tab_id
     if request.method == 'POST':
-        tabId = request.form.get('tabId')
-        # If 'user_id' is not in the session or tabId changed, generate a new user ID
-        if 'user_id' not in session or tabId != session.get('tabId', '0'):
+        tab_id = request.form.get('tab_id')
+        # If 'user_id' is not in the session or tab_id changed, generate a new user ID
+        if 'user_id' not in session or tab_id != session.get('tab_id', '0'):
             # Remove the old user's session data from the colony dictionary
-            if 'user_id' in session and session['user_id'] in colony:
-                del colony[session['user_id']]        
+            if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
+                del colony[session['user_id']][session['tab_id']]    
             session['user_id'] = generate_user_id()
             colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
         user_id = session['user_id']
         #check if the user id is in the colony dictionary
-        if user_id not in colony:
-            colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+        if user_id not in colony or tab_id not in colony:
+            colony[user_id][tab_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
         # return redirect(url_for('home'))
-        return jsonify(user_id=user_id, tabId=tabId)  # Return JSON response
+        return jsonify(user_id=user_id, tab_id=tab_id)  # Return JSON response
     else:
-        return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id, tabId=tabId)
+        return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id, tab_id=tab_id)
 
 @app.route('/clear_session')
 def clear_session():
@@ -55,7 +55,7 @@ def generate_user_id():
     ip_address = request.remote_addr 
     current_time_ticks = int(time.time() * 1000) # Get current time in ticks (milliseconds)
     random_number = random.randint(1, 1000) # Generate a random number
-    tabId = session.get('tabId', '0') # Use the tabId from the session if it exists, otherwise use '0'
+    tab_id = session.get('tab_id', '0') # Use the tab_id from the session if it exists, otherwise use '0'
     unique_string = f"{ip_address}-{current_time_ticks}-{random_number}" # Combine IP address, time ticks and random number for uniqueness
     user_id = hashlib.sha256(unique_string.encode()).hexdigest() # Hash the unique string to create a consistent and secure user ID
     return user_id

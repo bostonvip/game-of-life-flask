@@ -9,25 +9,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let timer = null;
     // let userId;  
 
-    // Set tabId and send it to the server
-    if (!sessionStorage.getItem('tabId')) {
-        sessionStorage.setItem('tabId', Date.now().toString());
+    // Set tab_id and send it to the server
+    if (!sessionStorage.getItem('tab_id')) {
+        sessionStorage.setItem('tab_id', Date.now().toString());
     }
-    let tabId = sessionStorage.getItem('tabId');
-    console.log('tabId: ', tabId);
+    let tab_id = sessionStorage.getItem('tab_id');
+    console.log('tab_id: ', tab_id);
 
     fetch('/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `tabId=${tabId}`,
+        body: `tab_id=${tab_id}`,
     }) 
     .then(response => response.json())
     .then(data => {
-        // Refresh user_id and tabId
+        // Refresh user_id and tab_id
         let user_id = data.user_id;
-        tabId = data.tabId;
+        tab_id = data.tab_id;
         console.log('user_id: ', user_id);
 
         // Update 'session-id-label' element on the DOM
