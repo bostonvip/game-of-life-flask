@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let isBoardCleared = false;
     let generation = 0;
     const generation_update_interval = 500;  
-    let timer = null;  
+    let timer = null;
+    // let userId;  
 
     // Set tabId and send it to the server
     if (!sessionStorage.getItem('tabId')) {
@@ -21,6 +22,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: `tabId=${tabId}`,
+    }) 
+    .then(response => response.json())
+    .then(data => {
+        // Refresh user_id and tabId
+        let user_id = data.user_id;
+        tabId = data.tabId;
+
+        // Update 'session-id-label' element on the DOM
+        let sessionIdLabel = document.getElementById('session-id-label');
+        sessionIdLabel.textContent = 'id: ' + user_id;
+        sessionIdLabel.style.visibility = 'visible';
     });
 
     // Get all grid cells

@@ -62,6 +62,7 @@ body {
 #session-id-label {
     position: relative; 
     display: block;
+    visibility: hidden;
     text-align: left;
     font-size: 10px;
     margin: 0 auto;

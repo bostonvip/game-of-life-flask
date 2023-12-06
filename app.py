@@ -18,25 +18,29 @@ colony = {} # Dictionary of cell colony grids, one for each user's session
 # Define variables
 isRunning = False
 generation = 0
+user_id = '298c5cba8e95ff110b1afcc307b712f83e8d245a46decc8c9a560bab8ef5c7fb' # Unique user session ID
+tabId = '0' # Unique browser tab ID
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    global colony
+    global colony, user_id, tabId
     if request.method == 'POST':
         tabId = request.form.get('tabId')
-    else: tabId = session.get('tabId', '0')
-    if 'user_id' not in session or tabId != session.get('tabId', '0'):
-        # Remove the old user's session data from the colony dictionary
-        if 'user_id' in session and session['user_id'] in colony:
-            del colony[session['user_id']]        
         # If 'user_id' is not in the session or tabId changed, generate a new user ID
-        session['user_id'] = generate_user_id()
-        colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
-    user_id = session['user_id']
-    #check if the user id is in the colony dictionary
-    if user_id not in colony:
-        colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
-    return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id)
+        if 'user_id' not in session or tabId != session.get('tabId', '0'):
+            # Remove the old user's session data from the colony dictionary
+            if 'user_id' in session and session['user_id'] in colony:
+                del colony[session['user_id']]        
+            session['user_id'] = generate_user_id()
+            colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+        user_id = session['user_id']
+        #check if the user id is in the colony dictionary
+        if user_id not in colony:
+            colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+        # return redirect(url_for('home'))
+        return jsonify(user_id=user_id, tabId=tabId)  # Return JSON response
+    else:
+        return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id, tabId=tabId)
 
 @app.route('/clear_session')
 def clear_session():
