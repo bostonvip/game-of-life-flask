@@ -26,7 +26,7 @@
 
         <div id="bottom-container">
             <div id="session-id-label-container">
-                <p id="session-id-label">id: 0efbfbc93ca83e6782f3f35c77131367e7d1db53ee3391b14cdcda1967a4ba67</p>
+                <p id="session-id-label">id: {{ user_id }}</p>
             </div>
 
             <div id="button-container">
@@ -41,6 +41,7 @@
     </div>    
         
     <script>
+        let userId = "{{ user_id }}";
         const COLONY_NUMBER_OF_COLS = {{ num_of_cols }};
         console.log("The value of num_of_cols is {{ num_of_cols }}");
     </script>

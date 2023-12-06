@@ -116,7 +116,10 @@ body {
     }
     #button-container {
         margin-left: 11%;
-    }    
+    } 
+    #session-id-label {
+        font-size: 10px;
+    }          
 }
 
 @media (max-width: 1100px)
@@ -137,7 +140,7 @@ body {
         font-size: 16px;
     }
     #session-id-label {
-        font-size: 8px;
+        font-size: 9px;
     }     
 }
 
