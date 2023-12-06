@@ -19,9 +19,11 @@ colony = {} # Dictionary of cell colony grids, one for each user's session
 isRunning = False
 generation = 0
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     global colony
+    if request.method == 'POST':
+        session['tabId'] = request.form.get('tabId')    
     if 'user_id' not in session:
         # If 'user_id' is not in the session, generate a new user ID
         session['user_id'] = generate_user_id()
@@ -40,20 +42,12 @@ def clear_session():
 
 # Generate a unique user ID here
 def generate_user_id():
-    # Get the client's IP address
-    ip_address = request.remote_addr
-
-    # Get current time in ticks (milliseconds)
-    current_time_ticks = int(time.time() * 1000)
-
-    # Generate a random number
-    random_number = random.randint(1, 1000)
-
-    # Combine IP address, time ticks, and random number for uniqueness
-    unique_string = f"{ip_address}-{current_time_ticks}-{random_number}"
-
-    # Hash the unique string to create a consistent and secure user ID
-    user_id = hashlib.sha256(unique_string.encode()).hexdigest()
+    ip_address = request.remote_addr 
+    current_time_ticks = int(time.time() * 1000) # Get current time in ticks (milliseconds)
+    random_number = random.randint(1, 1000) # Generate a random number
+    tabId = session.get('tabId', '0') # Use the tabId from the session if it exists, otherwise use '0'
+    unique_string = f"{ip_address}-{current_time_ticks}-{random_number}-{tabId}" # Combine IP address, time ticks, tabId and random number for uniqueness
+    user_id = hashlib.sha256(unique_string.encode()).hexdigest() # Hash the unique string to create a consistent and secure user ID
     return user_id
 
 # Start/Pause button clicked   

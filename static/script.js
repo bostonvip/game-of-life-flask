@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const generation_update_interval = 500;  
     let timer = null;  
 
+    // Set tabId and send it to the server
+    if (!sessionStorage.getItem('tabId')) {
+        sessionStorage.setItem('tabId', Date.now().toString());
+    }
+    let tabId = sessionStorage.getItem('tabId');
+
+    fetch('/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `tabId=${tabId}`,
+    });
+
     // Get all grid cells
     const cells = document.querySelectorAll('.grid-cell');
 
