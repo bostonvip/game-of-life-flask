@@ -23,9 +23,13 @@ generation = 0
 def home():
     global colony
     if request.method == 'POST':
-        session['tabId'] = request.form.get('tabId')    
-    if 'user_id' not in session:
-        # If 'user_id' is not in the session, generate a new user ID
+        tabId = request.form.get('tabId')
+    else: tabId = session.get('tabId', '0')
+    if 'user_id' not in session or tabId != session.get('tabId', '0'):
+        # Remove the old user's session data from the colony dictionary
+        if 'user_id' in session and session['user_id'] in colony:
+            del colony[session['user_id']]        
+        # If 'user_id' is not in the session or tabId changed, generate a new user ID
         session['user_id'] = generate_user_id()
         colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
     user_id = session['user_id']
@@ -37,6 +41,8 @@ def home():
 @app.route('/clear_session')
 def clear_session():
     # Clear the user's session data
+    if session['user_id'] in colony:
+        del colony[session['user_id']]
     session.clear()
     return redirect(url_for('index'))
 

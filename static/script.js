@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         sessionStorage.setItem('tabId', Date.now().toString());
     }
     let tabId = sessionStorage.getItem('tabId');
+    console.log('tabId: ', tabId);
 
     fetch('/', {
         method: 'POST',
