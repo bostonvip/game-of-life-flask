@@ -16,8 +16,8 @@ app.secret_key = b'My.Very@Secret.Key'
 colony = {} # Dictionary of cell colony grids, one for each user's session
 
 # Define variables
-isRunning = False
-generation = 0
+# isRunning = False
+# generation = 0
 user_id = '298c5cba8e95ff110b1afcc307b712f83e8d245a46decc8c9a560bab8ef5c7fb' # Unique user session ID
 tabId = '0' # Unique browser tab ID
 
@@ -56,7 +56,7 @@ def generate_user_id():
     current_time_ticks = int(time.time() * 1000) # Get current time in ticks (milliseconds)
     random_number = random.randint(1, 1000) # Generate a random number
     tabId = session.get('tabId', '0') # Use the tabId from the session if it exists, otherwise use '0'
-    unique_string = f"{ip_address}-{current_time_ticks}-{random_number}-{tabId}" # Combine IP address, time ticks, tabId and random number for uniqueness
+    unique_string = f"{ip_address}-{current_time_ticks}-{random_number}" # Combine IP address, time ticks and random number for uniqueness
     user_id = hashlib.sha256(unique_string.encode()).hexdigest() # Hash the unique string to create a consistent and secure user ID
     return user_id
 

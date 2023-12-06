@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Refresh user_id and tabId
         let user_id = data.user_id;
         tabId = data.tabId;
+        console.log('user_id: ', user_id);
 
         // Update 'session-id-label' element on the DOM
         let sessionIdLabel = document.getElementById('session-id-label');
