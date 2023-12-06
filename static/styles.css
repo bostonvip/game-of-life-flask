@@ -54,10 +54,24 @@ body {
     margin: 5px auto;
 }
 
-#button-container {
+#session-id-container {
     display: flex;
     justify-content: center;
+}
+
+#session-id-label {
+    position: relative; 
+    display: block;
+    text-align: left;
+    font-size: 10px;
+    margin: 0 auto;
+}
+
+#button-container {
+    display: flex;
+    justify-content: left;
     flex-grow: 1;
+    margin-left: 15%;
 }
 
 #button-container button {
@@ -100,6 +114,9 @@ body {
         width: 20px;
         height: 20px;           
     }
+    #button-container {
+        margin-left: 11%;
+    }    
 }
 
 @media (max-width: 1100px)
@@ -108,6 +125,9 @@ body {
         width: 15px;
         height: 15px;           
     }
+    #button-container {
+        margin-left: 10%;
+    }    
     #button-container button {
         width: 75px;
         height: 30px;     
@@ -115,6 +135,9 @@ body {
     }     
     #generation-label {
         font-size: 16px;
+    }
+    #session-id-label {
+        font-size: 8px;
     }     
 }
 
@@ -124,6 +147,20 @@ body {
         width: 10px;
         height: 10px;           
     }
+    #button-container {
+        margin-left: 10px;
+    }
+    #button-container button {
+        width: 75px;
+        height: 30px;     
+        font-size: 14px;       
+    }      
+    #generation-label {
+        font-size: 12px;
+    }    
+    #session-id-label {
+        font-size: 8px;
+    } 
 }
 
 /* add media query for landscape mode on iPad Pro 10" landscape */
@@ -135,7 +172,10 @@ body {
     .grid-cell {
         width: 15px;
         height: 15px;       
-    }   
+    }
+    #button-container {
+        margin-left: 9%;
+    }       
     #button-container button {
         width: 75px;
         height: 30px;
