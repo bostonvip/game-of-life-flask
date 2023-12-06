@@ -31,8 +31,9 @@ def home():
             # Remove the old user's session data from the colony dictionary
             if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
                 del colony[session['user_id']][session['tab_id']]    
-            session['user_id'] = generate_user_id()
-            colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+            if 'user_id' not in session: session['user_id'] = generate_user_id()
+            if 'tab_id' not in session: session['tab_id'] = tab_id
+            colony[session['user_id']][session['tab_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
         user_id = session['user_id']
         #check if the user id is in the colony dictionary
         if user_id not in colony or tab_id not in colony:
