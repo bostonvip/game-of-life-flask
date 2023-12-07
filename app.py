@@ -16,8 +16,6 @@ app.secret_key = b'My.Very@Secret.Key'
 colony = {} # Dictionary of cell colony grids, one for each user's session
 
 # Define variables
-# isRunning = False
-# generation = 0
 user_id = '298c5cba8e95ff110b1afcc307b712f83e8d245a46decc8c9a560bab8ef5c7fb' # Unique user session ID
 tab_id = '0' # Unique browser tab ID
 
@@ -25,19 +23,21 @@ tab_id = '0' # Unique browser tab ID
 def home():
     global colony, user_id, tab_id
     if request.method == 'POST':
-        tab_id = request.form.get('tab_id')
-        # If 'user_id' is not in the session or tab_id changed, generate a new user ID
-        if 'user_id' not in session or tab_id != session.get('tab_id', '0'):
-            # Remove the old user's session data from the colony dictionary
-            # if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
-            #     del colony[session['user_id']][session['tab_id']]    
-            if 'user_id' not in session: session['user_id'] = generate_user_id()
-            if session['user_id'] not in colony: colony[session['user_id']] = {}
+        tab_id = request.form.get('tab_id') #retrieve the tab_id from the form
+
+        # if user_id is not in the session, generate a new user ID
+        if 'user_id' not in session: 
+            session['user_id'] = generate_user_id()
+
+        # if user_id is not in the colony dictionary for the session user_id, add new tab_id dictionary to it
+        if session['user_id'] not in colony:
+            colony[session['user_id']] = {}
+        user_id = session['user_id']            
+
+        # if tab_id is not in the tab_id dictionary for the session user_id, create a new colony grid and add to it
+        if tab_id not in colony[session['user_id']]:
             colony[session['user_id']][tab_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
-        user_id = session['user_id']
-        #check if the user id is in the colony dictionary
-        if user_id not in colony or tab_id not in colony:
-            colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+
         # return redirect(url_for('home'))
         return jsonify(user_id=user_id, tab_id=tab_id)  # Return JSON response
     else:
@@ -80,7 +80,8 @@ def increment_generation():
     if isRunning:
         # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Example of an actual list of cell IDs
         # cell_states = [True, True, True]  # Example of an actual list of cell states
-        cell_ids, cell_states = colony[user_id].go_through_one_generation()
+        if user_id in colony and tab_id in colony[user_id]:
+            cell_ids, cell_states = colony[user_id][tab_id].go_through_one_generation()
     #return the list of cell IDs and states to update the game board
     return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented to ' + str(generation)})
 
@@ -90,8 +91,9 @@ def clear_btn():
     # "Clear" button functionality here
     data = request.get_json()
     user_id = data['user_id']
-    tab_id = data['tab_id']    
-    colony[user_id].clear_board()
+    tab_id = data['tab_id']
+    if user_id in colony and tab_id in colony[user_id]:    
+        colony[user_id][tab_id].clear_board()
     return jsonify({'result': 'Clear button clicked!!!'})
 
 # Cell clicked
@@ -106,7 +108,9 @@ def cell_click():
     user_id = data['user_id']
     tab_id = data['tab_id']
     s_alive = 'alive' if alive else 'dead'
-    colony[user_id].set_cell_state(col, row, alive)
+    # update the cell state in the colony
+    if user_id in colony and tab_id in colony[user_id]:
+        colony[user_id][tab_id].set_cell_state(col, row, alive)
     return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked {s_alive}'})
 
 if __name__ == '__main__':
