@@ -65,7 +65,6 @@ def generate_user_id():
 @app.route('/start', methods=['POST'])
 def start_btn():
     # The "Start" button functionality here
-    isRunning = request.get_json()['isRunning']
     return jsonify({'result': 'Start button clicked!!!'})
 
 # Generation increment timer event
@@ -90,8 +89,6 @@ def increment_generation():
 def clear_btn():
     # "Clear" button functionality here
     data = request.get_json()
-    isRunning = data['isRunning']
-    generation = data['generation']
     user_id = data['user_id']
     tab_id = data['tab_id']    
     colony[user_id].clear_board()
