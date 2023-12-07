@@ -7,13 +7,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let generation = 0;
     const generation_update_interval = 500;  
     let timer = null;
-    // let userId;  
+    let user_id;
+    let tab_id;  
 
     // Set tab_id and send it to the server
     if (!sessionStorage.getItem('tab_id')) {
         sessionStorage.setItem('tab_id', Date.now().toString());
     }
-    let tab_id = sessionStorage.getItem('tab_id');
+    tab_id = sessionStorage.getItem('tab_id');
     console.log('tab_id: ', tab_id);
 
     fetch('/', {
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then(response => response.json())
     .then(data => {
         // Refresh user_id and tab_id
-        let user_id = data.user_id;
+        user_id = data.user_id;
         tab_id = data.tab_id;
         console.log('user_id: ', user_id);
 
@@ -60,6 +61,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     'row': row,
                     'col': col,
                     'alive': cell.classList.contains('black') ? 1 : 0,
+                    'user_id': user_id,
+                    'tab_id': tab_id
                 }),
             })
             .then(response => response.json())
@@ -83,7 +86,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ isRunning: isRunning, generation: generation }),
+                    body: JSON.stringify({'isRunning': isRunning, 'generation': generation, 'user_id': user_id, 'tab_id': tab_id}),
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -109,7 +112,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ isRunning: isRunning, generation: generation }),
+            body: JSON.stringify({'isRunning': isRunning, 'generation': generation, 'user_id': user_id, 'tab_id': tab_id}),
         })
         .then(response => response.json())
         .then(data => {
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ isRunning: isRunning, generation: generation }),
+            body: JSON.stringify({'isRunning': isRunning, 'generation': generation, 'user_id': user_id, 'tab_id': tab_id}),
         })
         .then(response => response.json())
         .then(data => console.log(data.result));

@@ -29,15 +29,15 @@ def home():
         # If 'user_id' is not in the session or tab_id changed, generate a new user ID
         if 'user_id' not in session or tab_id != session.get('tab_id', '0'):
             # Remove the old user's session data from the colony dictionary
-            if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
-                del colony[session['user_id']][session['tab_id']]    
+            # if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
+            #     del colony[session['user_id']][session['tab_id']]    
             if 'user_id' not in session: session['user_id'] = generate_user_id()
-            if 'tab_id' not in session: session['tab_id'] = tab_id
-            colony[session['user_id']][session['tab_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+            # if 'tab_id' not in session: session['tab_id'] = tab_id
+            colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
         user_id = session['user_id']
         #check if the user id is in the colony dictionary
         if user_id not in colony or tab_id not in colony:
-            colony[user_id][tab_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
+            colony[user_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS)
         # return redirect(url_for('home'))
         return jsonify(user_id=user_id, tab_id=tab_id)  # Return JSON response
     else:
@@ -74,12 +74,14 @@ def increment_generation():
     data = request.get_json()
     isRunning = data['isRunning']
     generation = data['generation']
+    user_id = data['user_id']
+    tab_id = data['tab_id']
     # if the game is running, increment the generation number and update the game state
     cell_ids = cell_states = []
     if isRunning:
         # cell_ids = ['cell-11-22', 'cell-0-0', 'cell-11-23']  # Example of an actual list of cell IDs
         # cell_states = [True, True, True]  # Example of an actual list of cell states
-        cell_ids, cell_states = colony[session['user_id']].go_through_one_generation()
+        cell_ids, cell_states = colony[user_id].go_through_one_generation()
     #return the list of cell IDs and states to update the game board
     return jsonify({'cell_ids': cell_ids, 'cell_states': cell_states, 'result': 'Generation incremented to ' + str(generation)})
 
@@ -87,7 +89,12 @@ def increment_generation():
 @app.route('/clear', methods=['POST'])
 def clear_btn():
     # "Clear" button functionality here
-    colony[session['user_id']].clear_board()
+    data = request.get_json()
+    isRunning = data['isRunning']
+    generation = data['generation']
+    user_id = data['user_id']
+    tab_id = data['tab_id']    
+    colony[user_id].clear_board()
     return jsonify({'result': 'Clear button clicked!!!'})
 
 # Cell clicked
@@ -99,8 +106,10 @@ def cell_click():
     row = data['row']
     col = data['col']
     alive = data['alive']
+    user_id = data['user_id']
+    tab_id = data['tab_id']
     s_alive = 'alive' if alive else 'dead'
-    colony[session['user_id']].set_cell_state(col, row, alive)
+    colony[user_id].set_cell_state(col, row, alive)
     return jsonify({'result': f'Cell "{cell_id}" at row {row}, column {col} clicked {s_alive}'})
 
 if __name__ == '__main__':
