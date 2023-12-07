@@ -32,8 +32,8 @@ def home():
             # if 'user_id' in session and 'tab_id' in session and session['user_id']['tab_id'] in colony:
             #     del colony[session['user_id']][session['tab_id']]    
             if 'user_id' not in session: session['user_id'] = generate_user_id()
-            # if 'tab_id' not in session: session['tab_id'] = tab_id
-            colony[session['user_id']] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
+            if session['user_id'] not in colony: colony[session['user_id']] = {}
+            colony[session['user_id']][tab_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
         user_id = session['user_id']
         #check if the user id is in the colony dictionary
         if user_id not in colony or tab_id not in colony:
@@ -56,7 +56,7 @@ def generate_user_id():
     ip_address = request.remote_addr 
     current_time_ticks = int(time.time() * 1000) # Get current time in ticks (milliseconds)
     random_number = random.randint(1, 1000) # Generate a random number
-    tab_id = session.get('tab_id', '0') # Use the tab_id from the session if it exists, otherwise use '0'
+    # tab_id = session.get('tab_id', '0') # Use the tab_id from the session if it exists, otherwise use '0'
     unique_string = f"{ip_address}-{current_time_ticks}-{random_number}" # Combine IP address, time ticks and random number for uniqueness
     user_id = hashlib.sha256(unique_string.encode()).hexdigest() # Hash the unique string to create a consistent and secure user ID
     return user_id
