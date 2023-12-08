@@ -37,6 +37,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         sessionIdLabel.style.visibility = 'visible';
     });
 
+    // Add event listener when the user closes the tab or browser
+    window.addEventListener('beforeunload', (event) => {
+        fetch('/tab_closed', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({'user_id': user_id, 'tab_id': tab_id}),
+        });
+        // .then(response => response.json())
+        // .then(data => console.log(data.result));
+    });
+
     // Get all grid cells
     const cells = document.querySelectorAll('.grid-cell');
 

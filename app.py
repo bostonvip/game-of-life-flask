@@ -43,12 +43,20 @@ def home():
     else:
         return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id, tab_id=tab_id)
 
-@app.route('/clear_session')
+@app.route('/tab_closed', methods=['POST'])
 def clear_session():
-    # Clear the user's session data
-    if session['user_id'] in colony:
-        del colony[session['user_id']]
-    session.clear()
+    # Clear the user's session data and remove the tab_id from the colony dictionary when the tab is closed
+    data = request.get_json()
+    user_id = data['user_id']
+    tab_id = data['tab_id']
+    print('Tab closed: ' + tab_id + ' for user: ' + user_id)
+    if user_id in colony:
+        if tab_id in colony[user_id]:
+            del colony[user_id][tab_id]
+            if len(colony[user_id]) == 0:
+                del colony[user_id]
+                session.clear()
+    print('Colony length after: ' + str(len(colony)))
     return redirect(url_for('index'))
 
 # Generate a unique user ID here
