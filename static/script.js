@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         sessionIdLabel.style.visibility = 'visible';
     });
 
-    // Add event listener when the user closes the tab or browser
+    // Event listener when the user closes the tab or browser
     window.addEventListener('beforeunload', (event) => {
         fetch('/tab_closed', {
             method: 'POST',
@@ -110,6 +110,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         }
                     });
                     console.log(data.result);
+                    // Stop the generation counter if no cells change state
+                    if (data.cell_ids.length === 0) {
+                        clearInterval(timer); // Stop the timer
+                        isRunning = false; // Clear the running state
+                        document.getElementById('start-button').textContent = 'Start'; // Reset the Start/Pause button
+                        console.log("Colony equilibrium reached!!!");
+                    }
                 });
             }, generation_update_interval);
         } else {
