@@ -24,7 +24,6 @@ def home():
     global colony, user_id, tab_id
     if request.method == 'POST':
         tab_id = request.form.get('tab_id') #retrieve the tab_id from the form
-        print('Tab opened: ' + tab_id)
 
         # if user_id is not in the session, generate a new user ID
         if 'user_id' not in session: 
@@ -33,15 +32,12 @@ def home():
         # if user_id is not in the colony dictionary for the session user_id, add new tab_id dictionary to it
         if session['user_id'] not in colony:
             colony[session['user_id']] = {}
-            print('Colony user_id added: ' + session['user_id'] + ' len: ' + str(len(colony)))
         user_id = session['user_id']            
 
         # if tab_id is not in the tab_id dictionary for the session user_id, create a new colony grid and add to it
         if tab_id not in colony[session['user_id']]:
             colony[session['user_id']][tab_id] = Colony(COLONY_NUMBER_OF_COLS, COLONY_NUMBER_OF_ROWS) # Create the cell colony grid and add it to the layout
-            print('Colony new tab_id added: ' + tab_id + ' for user: ' + user_id + ' len: ' + str(len(colony[session['user_id']])))
 
-        # return redirect(url_for('home'))
         return jsonify(user_id=user_id, tab_id=tab_id)  # Return JSON response
     else:
         return render_template('index.html', num_of_rows = COLONY_NUMBER_OF_ROWS, num_of_cols = COLONY_NUMBER_OF_COLS, user_id=user_id, tab_id=tab_id)
@@ -52,16 +48,12 @@ def clear_session():
     data = request.get_json()
     user_id = data['user_id']
     tab_id = data['tab_id']
-    print('Tab closure requested: ' + tab_id + ' for user: ' + user_id)
     if user_id in colony:
         if tab_id in colony[user_id]:
             del colony[user_id][tab_id]
-            print('Tab removed: ' + tab_id + ' for user: ' + user_id + ' len: ' + str(len(colony[user_id])))
             if len(colony[user_id]) == 0:
                 del colony[user_id]
                 session.clear()
-                print('User session cleared: ' + user_id + ' len: ' + str(len(colony)))
-    print('Colony length after tab closure: ' + str(len(colony)))
     return redirect(url_for('home'))
 
 # Generate a unique user ID here
@@ -69,7 +61,6 @@ def generate_user_id():
     ip_address = request.remote_addr 
     current_time_ticks = int(time.time() * 1000) # Get current time in ticks (milliseconds)
     random_number = random.randint(1, 1000) # Generate a random number
-    # tab_id = session.get('tab_id', '0') # Use the tab_id from the session if it exists, otherwise use '0'
     unique_string = f"{ip_address}-{current_time_ticks}-{random_number}" # Combine IP address, time ticks and random number for uniqueness
     user_id = hashlib.sha256(unique_string.encode()).hexdigest() # Hash the unique string to create a consistent and secure user ID
     return user_id

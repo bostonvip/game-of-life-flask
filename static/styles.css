@@ -26,12 +26,10 @@ body {
     display: flex;
     flex-direction: column; 
     border: 1px solid black;
-    /* overflow: hidden; */
 }
 
 .grid-row {
     display: flex;
-    /* flex-wrap: wrap;  */
     overflow: hidden;
 }
 
@@ -78,7 +76,7 @@ body {
 #button-container button {
     width: 100px;
     height: 40px;
-    background-color: #5c5a5a; /*#0056b3;*/ /* Blue */
+    background-color: #5c5a5a;
     border: none;
     color: white;
     text-align: center;
@@ -103,10 +101,10 @@ body {
     margin: 0 auto;
 }
 
-#button-container button:hover {background-color: #979797 /*#007BFF*/} /* Lighter blue */
+#button-container button:hover {background-color: #979797} /* Light grey */
 
 #button-container button:active {
-  background-color: #424141; /* #0056b3;*/
+  background-color: #424141; /* Dark Gray */
 }
 
 @media (max-width: 1400px) 
@@ -167,7 +165,7 @@ body {
     } 
 }
 
-/* add media query for landscape mode on iPad Pro 10" landscape */
+/* media query for landscape mode on high-res tablets and phones */
 @media only screen 
   and (min-device-width: 834px) 
   and (max-device-width: 1112px) 
@@ -189,61 +187,4 @@ body {
         font-size: 16px;
     }    
 }
-
-/* DEVICE SCREEN SIZE EXPERIMENTATION BELOW */
-
-/* @media only screen and (max-width: 575.98px) {
-    // CSS rules for extra small devices like small phones 
-}
-*/
-
-/* CSS rules for small devices like phones  */
-/* @media only screen and (min-width: 576px) and (max-width: 767.98px) {
-    .grid-cell {
-        width: 15px;
-        height: 15px;       
-    }   
-    #button-container button {
-        width: 75px;
-        height: 30px;            
-    }    
-    #generation-label {
-        font-size: 15px;
-    }       
-}     */
-
-/* CSS rules for medium devices like tablets  */
-/* @media only screen and (min-width: 768px) and (max-width: 991.98px) {
-    .grid-cell {
-        width: 15px;
-        height: 15px;       
-    }   
-    #button-container button {
-        width: 75px;
-        height: 30px;            
-    }    
-    #generation-label {
-        font-size: 15px;
-    }       
-} */
-/*
-@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
-    // CSS rules for large devices like large tablets and small desktops 
-    .grid-cell {
-        width: 15px;
-        height: 15px;       
-    }   
-    #button-container button {
-        width: 75px;
-        height: 30px;            
-    }    
-    #generation-label {
-        font-size: 15px;
-    }       
-}
-@media only screen and (min-width: 1200px) {
-    // CSS rules for extra large devices like large desktops 
-} */
-
-
 

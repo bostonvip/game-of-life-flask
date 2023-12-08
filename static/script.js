@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Refresh user_id and tab_id
         user_id = data.user_id;
         tab_id = data.tab_id;
-        console.log('user_id: ', user_id);
 
         // Update 'session-id-label' element on the DOM
         let sessionIdLabel = document.getElementById('session-id-label');
@@ -46,8 +45,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             },
             body: JSON.stringify({'user_id': user_id, 'tab_id': tab_id}),
         });
-        // .then(response => response.json())
-        // .then(data => console.log(data.result));
     });
 
     // Get all grid cells
