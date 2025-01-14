@@ -6,18 +6,18 @@ RUN useradd -m -r service && \
     chown -R service:service /app && \
     python -m pip install -U pip wheel
 
-USER service
-
 WORKDIR /app
 
 # Copy and install dependencies
-COPY --chown=service:service requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy source files
-COPY --chown=service:service service ./service
+COPY --chown=service:service . .
+
+USER service
 
 # Run the service on port 8000
 ENV PORT=8000
 EXPOSE $PORT
-CMD ["gunicorn", "service:app", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]
